@@ -11,3 +11,13 @@
  * All of the subsequent problems in this homework can be solved with LATERAL JOINs
  * (or slightly less conveniently with subqueries).
  */
+
+SELECT c.first_name, c.last_name, f.title, r.rental_date
+FROM customer c
+JOIN rental r USING (customer_id)
+JOIN inventory i USING (inventory_id)
+JOIN film f USING (film_id)
+WHERE r.rental_date = (
+    SELECT max(rental_date) FROM rental r2 WHERE r2.customer_id = c.customer_id
+)
+ORDER BY c.last_name, c.first_name;

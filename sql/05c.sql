@@ -5,3 +5,7 @@
  * Write a SQL query that lists all movies where at least 3 actors were in one of the above three movies.
  * (The actors do not necessarily have to all be in the same movie, and you do not necessarily need one actor from each movie.)
  */
+
+SELECT f.title FROM film f JOIN film_actor fa USING(film_id) JOIN film_actor ref ON ref.actor_id=fa.actor_id
+WHERE ref.film_id IN (SELECT film_id FROM film WHERE title IN ('AMERICAN CIRCUS','ACADEMY DINOSAUR','AGENT TRUMAN'))
+GROUP BY f.film_id, f.title HAVING count(DISTINCT (fa.actor_id, ref.film_id))>=3 ORDER BY f.title;
